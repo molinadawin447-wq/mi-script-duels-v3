@@ -132,7 +132,7 @@ for columna = 1, 4 do
 end
 
 -- ========================
--- FUNCIONALIDAD RESET (CORREGIDA)
+-- FUNCIONALIDAD RESET
 -- ========================
 local resetButton = frame:FindFirstChild("Boton_1_1")
 if resetButton then
@@ -169,100 +169,57 @@ if tpDownButton then
     end)
 end
 
--- ========================
--- BOTÓN "force hub" (izquierda, arrastrable con ratón y dedo)
--- ========================
-local forceButton = Instance.new("TextButton")
-forceButton.Name = "ForceHub"
-forceButton.Size = UDim2.new(0, 200, 0, 40)
-forceButton.Position = UDim2.new(0, 10, 0, 200)  -- Izquierda
-forceButton.Text = "force hub"
-forceButton.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-forceButton.TextColor3 = Color3.fromRGB(200, 200, 200)
-forceButton.Font = Enum.Font.GothamBold
-forceButton.TextSize = 20
-forceButton.BorderSizePixel = 0
-local cornerBtn = Instance.new("UICorner")
-cornerBtn.CornerRadius = UDim.new(0, 10)
-cornerBtn.Parent = forceButton
-forceButton.Parent = screenGui
-
--- Arrastre para forceButton (soporta mouse y touch)
-local draggingForce = false
-local dragStartForce = nil
-local startPosForce = nil
-
-local function onInputBeganForce(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        draggingForce = true
-        dragStartForce = input.Position
-        startPosForce = forceButton.Position
-    end
-end
-
-local function onInputEndedForce(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        draggingForce = false
-    end
-end
-
-local function onInputChangedForce(input)
-    if draggingForce and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-        local delta = input.Position - dragStartForce
-        forceButton.Position = UDim2.new(0, startPosForce.X.Offset + delta.X, 0, startPosForce.Y.Offset + delta.Y)
-    end
-end
-
-forceButton.InputBegan:Connect(onInputBeganForce)
-forceButton.InputEnded:Connect(onInputEndedForce)
-UserInputService.InputChanged:Connect(onInputChangedForce)
-
 -- ================================================================
--- CONTENEDOR DEL BOTÓN NUMÉRICO + BARRA (arrastrable con ratón y dedo)
+-- CONTENEDOR DEL BOTÓN NUMÉRICO (arrastrable) con barra DENTRO
 -- ================================================================
 local contenedor = Instance.new("Frame")
 contenedor.Name = "ContenedorNum"
-contenedor.Size = UDim2.new(0, 230, 0, 70)
-contenedor.Position = UDim2.new(0.5, -115, 0.85, -35)
+contenedor.Size = UDim2.new(0, 350, 0, 80)   -- Más ancho (antes 230)
+contenedor.Position = UDim2.new(0.5, -175, 0.85, -40)  -- Centrado
 contenedor.AnchorPoint = Vector2.new(0.5, 0.5)
 contenedor.BackgroundTransparency = 1
 contenedor.Parent = screenGui
 
--- Botón numérico
+-- Botón negro (fondo)
 local numButton = Instance.new("TextButton")
 numButton.Name = "NumButton"
-numButton.Size = UDim2.new(0, 220, 0, 55)
-numButton.Position = UDim2.new(0.5, -110, 0, 0)
-numButton.AnchorPoint = Vector2.new(0, 0)
+numButton.Size = UDim2.new(1, 0, 1, 0)   -- Ocupa todo el contenedor
+numButton.Position = UDim2.new(0, 0, 0, 0)
 numButton.Text = "0%"
 numButton.TextXAlignment = Enum.TextXAlignment.Left
-numButton.TextYAlignment = Enum.TextYAlignment.Center
+numButton.TextYAlignment = Enum.TextYAlignment.Top
 numButton.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
 numButton.TextColor3 = Color3.fromRGB(200, 200, 200)
 numButton.Font = Enum.Font.GothamBold
-numButton.TextSize = 24
+numButton.TextSize = 28
 numButton.BorderSizePixel = 0
 
 local cornerNum = Instance.new("UICorner")
 cornerNum.CornerRadius = UDim.new(0, 10)
 cornerNum.Parent = numButton
+
+-- Padding para que el texto no esté pegado al borde
+local padding = Instance.new("UIPadding")
+padding.PaddingLeft = UDim.new(0, 12)
+padding.PaddingTop = UDim.new(0, 8)
+padding.Parent = numButton
+
 numButton.Parent = contenedor
 
--- Barra de progreso (fondo)
+-- Barra de progreso (fondo gris) dentro del botón, en la parte inferior
 local barraFondo = Instance.new("Frame")
 barraFondo.Name = "BarraFondo"
-barraFondo.Size = UDim2.new(0, 220, 0, 15)
-barraFondo.Position = UDim2.new(0.5, -110, 0, 55)
-barraFondo.AnchorPoint = Vector2.new(0, 0)
+barraFondo.Size = UDim2.new(1, 0, 0, 18)   -- Ocupa todo el ancho, altura 18
+barraFondo.Position = UDim2.new(0, 0, 1, -18)  -- Anclada abajo
 barraFondo.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 barraFondo.BorderSizePixel = 0
 
 local cornerBarra = Instance.new("UICorner")
 cornerBarra.CornerRadius = UDim.new(0, 8)
 cornerBarra.Parent = barraFondo
-barraFondo.Parent = contenedor
+barraFondo.Parent = numButton   -- <--- DENTRO del botón
 
--- Barra de progreso (relleno)
+-- Barra de progreso (relleno blanco/gris claro)
 local barraProgreso = Instance.new("Frame")
 barraProgreso.Name = "BarraProgreso"
 barraProgreso.Size = UDim2.new(0, 0, 1, 0)
@@ -275,7 +232,9 @@ cornerProgreso.CornerRadius = UDim.new(0, 8)
 cornerProgreso.Parent = barraProgreso
 barraProgreso.Parent = barraFondo
 
--- Arrastre para contenedor (soporta mouse y touch)
+-- ================================================================
+-- ARRASTRE DEL CONTENEDOR (ratón y dedo)
+-- ================================================================
 local draggingCont = false
 local dragStartCont = nil
 local startPosCont = nil
