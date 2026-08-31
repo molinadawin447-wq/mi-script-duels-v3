@@ -2752,7 +2752,7 @@ local function buildGui()
     fullUIBackground.Position = UDim2.new(0, 1, 0, 1)
     fullUIBackground.BackgroundTransparency = 1
     fullUIBackground.BorderSizePixel = 0
-    fullUIBackground.Image = "rbxassetid://101838369664744"
+    fullUIBackground.Image = "rbxassetid://140462571894052"
     fullUIBackground.ImageTransparency = 0.0
     fullUIBackground.ImageColor3 = Color3.fromRGB(255, 255, 255)
     fullUIBackground.ScaleType = Enum.ScaleType.Crop
@@ -4646,7 +4646,7 @@ local function buildGui()
     autoStealBg.Position = UDim2.new(0, 0, 0, 0)
     autoStealBg.BackgroundTransparency = 1
     autoStealBg.BorderSizePixel = 0
-    autoStealBg.Image = "rbxassetid://101838369664744"
+    autoStealBg.Image = "rbxassetid://140462571894052"
     autoStealBg.ImageTransparency = 0.0
     autoStealBg.ImageColor3 = Color3.fromRGB(255, 255, 255)
     autoStealBg.ScaleType = Enum.ScaleType.Crop
