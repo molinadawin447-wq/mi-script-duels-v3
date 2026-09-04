@@ -1,5 +1,5 @@
-if _G.LustHubRunning then return end
-_G.LustHubRunning = true
+if _G.FORCEHUBRunning then return end
+_G.FORCEHUBRunning = true
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -15,8 +15,8 @@ local ContentProvider = game:GetService("ContentProvider")
 -- ============================================================
 -- FUNCIONES DE ARCHIVO ROBUSTAS (tomadas de Ace Duels)
 -- ============================================================
-local CONFIG_FILE = "LustHub_Config.json"
-local KEYBINDS_FILE = "LustHub_Keybinds.json"
+local CONFIG_FILE = "FORCEHUB_Config.json"
+local KEYBINDS_FILE = "FORCEHUB_Keybinds.json"
 
 local _ace_isfile = isfile or (syn and syn.isfile) or function(path)
     local ok, result = pcall(function() return readfile(path) end)
@@ -97,7 +97,7 @@ local function runIntro()
     task.wait(0.2)
 
     local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "vis intro"
+    screenGui.Name = "forcehub intro"
     screenGui.Parent = LP:FindFirstChild("PlayerGui") or LP:WaitForChild("PlayerGui")
     screenGui.ResetOnSpawn = false
     screenGui.IgnoreGuiInset = true
@@ -645,7 +645,7 @@ function stopAutoSteal()
 end
 
 currentSkyTheme = "Off"
-CANDY_SKY_TAG = "LustHubSkyTheme"
+FORCEHUB_SKY_TAG = "FORCEHUBSkyTheme"
 candyOriginalLighting = nil
 
 bodyLockEnabled = false
@@ -1157,7 +1157,7 @@ _isResetting = false
 _lastSavedJSON = nil
 _isLoading = false
 
-local CANDY_SKY_PRESETS = {
+local FORCEHUB_SKY_PRESETS = {
     ["Off"] = { kind = "off" },
     ["Night"] = { clock = 22, brightness = 2, ambient = {110,100,130}, outAmb = {120,110,140}, sky = {stars = 4000, moon = 18, sun = 0, moonTex = true}, atm = {dens = 0.45, color = {120,60,180}, decay = {60,20,100}, glare = 0.5, haze = 1.2} },
     ["Aurora"] = { clock = 14, brightness = 3, ambient = {150,120,150}, outAmb = {160,130,150}, atm = {dens = 0.55, color = {255,80,200}, decay = {255,20,150}, glare = 2.5, haze = 3}, clouds = {cover = 0.7, dens = 0.7, color = {255,240,250}} },
@@ -1184,7 +1184,7 @@ local CANDY_SKY_PRESETS = {
     ["Mint Sky"] = { clock = 10, brightness = 3.2, ambient = {180,230,210}, outAmb = {190,240,220}, sky = {sun = 10}, atm = {dens = 0.32, color = {150,255,210}, decay = {100,220,180}, glare = 1.6, haze = 1.6}, clouds = {cover = 0.55, dens = 0.45, color = {240,255,250}} },
 }
 
-local CANDY_SKY_ORDER = {
+local FORCEHUB_SKY_ORDER = {
     {"Off","Off"}, {"Night","Night"}, {"Aurora","Aurora"}, {"Sunset","Sunset"},
     {"Galaxy","Galaxy"}, {"Cyber","Cyber"}, {"Sakura","Sakura"},
     {"Pink Night","Pink Night"}, {"Blood Moon","Blood Moon"},
@@ -1231,14 +1231,14 @@ end
 
 local function candyClearSky(removeAll)
     for _, child in ipairs(Lighting:GetChildren()) do
-        if child:GetAttribute(CANDY_SKY_TAG) or (removeAll and (child:IsA("Sky") or child:IsA("Atmosphere"))) then
+        if child:GetAttribute(FORCEHUB_SKY_TAG) or (removeAll and (child:IsA("Sky") or child:IsA("Atmosphere"))) then
             pcall(function() child:Destroy() end)
         end
     end
     local terrain = workspace:FindFirstChildOfClass("Terrain")
     if terrain then
         for _, child in ipairs(terrain:GetChildren()) do
-            if child:GetAttribute(CANDY_SKY_TAG) or (removeAll and child:IsA("Clouds")) then
+            if child:GetAttribute(FORCEHUB_SKY_TAG) or (removeAll and child:IsA("Clouds")) then
                 pcall(function() child:Destroy() end)
             end
         end
@@ -1247,7 +1247,7 @@ end
 
 local function candyInstance(className, parent, props)
     local inst = Instance.new(className)
-    inst:SetAttribute(CANDY_SKY_TAG, true)
+    inst:SetAttribute(FORCEHUB_SKY_TAG, true)
     for k, v in pairs(props or {}) do pcall(function() inst[k] = v end) end
     inst.Parent = parent
     return inst
@@ -1261,7 +1261,7 @@ local function CandyApplyCustomSky(mode)
     candySaveOriginalLighting()
     candyClearSky(true)
     local terrain = workspace:FindFirstChildOfClass("Terrain")
-    local preset = CANDY_SKY_PRESETS[mode]
+    local preset = FORCEHUB_SKY_PRESETS[mode]
     if not preset or preset.kind == "off" then
         if candyOriginalLighting then
             for k, v in pairs(candyOriginalLighting) do
@@ -1832,7 +1832,7 @@ local function updateESP()
             if not hl or not hl.Parent or hl.Parent ~= char then
                 if hl then pcall(function() hl:Destroy() end) end
                 hl = Instance.new("Highlight")
-                hl.Name = "LustHubESP"
+                hl.Name = "FORCEHUBESP"
                 hl.FillColor = Color3.fromRGB(230, 230, 230)
                 hl.FillTransparency = 0.72
                 hl.OutlineColor = Color3.fromRGB(230, 230, 230)
@@ -2037,11 +2037,11 @@ end
 function setupSpeedIndicator(char)
     local head = char:WaitForChild("Head", 5)
     if not head then return end
-    local oldBB = head:FindFirstChild("LustHubSpeedIndicator")
+    local oldBB = head:FindFirstChild("FORCEHUBSpeedIndicator")
     if oldBB then oldBB:Destroy() end
 
     local bb = Instance.new("BillboardGui", head)
-    bb.Name = "LustHubSpeedIndicator"
+    bb.Name = "FORCEHUBSpeedIndicator"
     bb.Size = UDim2.new(0, 200, 0, 70)
     bb.StudsOffset = Vector3.new(0, 2.0, 0)
     bb.AlwaysOnTop = true
@@ -3508,7 +3508,7 @@ end
 local function setupBackgroundImage()
     if bgImageRef then return end
     local bg = Instance.new("ImageLabel")
-    bg.Name = "LustHubBackgroundImage"
+    bg.Name = "FORCEHUBBackgroundImage"
     bg.Size = UDim2.new(1, 0, 1, 0)
     bg.Position = UDim2.new(0, 0, 0, 0)
     bg.BackgroundTransparency = 1
@@ -3620,10 +3620,10 @@ function saveAllSettings()
     end)
     if success then
         _lastSavedJSON = json
-        print("[LustHub] Config saved to " .. CONFIG_FILE)
+        print("[FORCEHUB] Config saved to " .. CONFIG_FILE)
         return true
     else
-        warn("[LustHub] Failed to save config: " .. tostring(err))
+        warn("[FORCEHUB] Failed to save config: " .. tostring(err))
         return false
     end
 end
@@ -3652,7 +3652,7 @@ function loadAllSettings()
         local defaultJson = HS:JSONEncode(mainConfig)
         pcall(function() _ace_writefile(CONFIG_FILE, defaultJson) end)
         _lastSavedJSON = defaultJson
-        print("[LustHub] Created default config file.")
+        print("[FORCEHUB] Created default config file.")
         return false
     end
 
@@ -3660,7 +3660,7 @@ function loadAllSettings()
         return HS:JSONDecode(_ace_readfile(CONFIG_FILE))
     end)
     if not success or type(data) ~= "table" then
-        warn("[LustHub] Failed to load config, using defaults.")
+        warn("[FORCEHUB] Failed to load config, using defaults.")
         return false
     end
 
@@ -3716,7 +3716,7 @@ function loadAllSettings()
 
     _lastSavedJSON = HS:JSONEncode(buildConfigTable())
     _isLoading = false
-    print("[LustHub] Config loaded successfully from " .. CONFIG_FILE)
+    print("[FORCEHUB] Config loaded successfully from " .. CONFIG_FILE)
     return true
 end
 
@@ -3961,13 +3961,13 @@ function buildGui()
 
     local GUI_W, GUI_H = 340, 430
 
-    local old = game:GetService("CoreGui"):FindFirstChild("VisDuels")
+    local old = game:GetService("CoreGui"):FindFirstChild("FORCEHUB")
     if old then old:Destroy() end
     local pg = LP:FindFirstChild("PlayerGui")
-    if pg then local o = pg:FindFirstChild("VisDuels"); if o then o:Destroy() end end
+    if pg then local o = pg:FindFirstChild("FORCEHUB"); if o then o:Destroy() end end
 
     gui = Instance.new("ScreenGui")
-    gui.Name = "VisDuels"
+    gui.Name = "FORCEHUB"
     gui.ResetOnSpawn = false
     gui.DisplayOrder = 10
     gui.IgnoreGuiInset = true
@@ -4004,7 +4004,7 @@ function buildGui()
     titleLabel.Size = UDim2.new(1, -80, 0, 44)
     titleLabel.Position = UDim2.new(0, 16, 0, 4)
     titleLabel.BackgroundTransparency = 1
-    titleLabel.Text = "Vis Duels"
+    titleLabel.Text = "FORCE HUB"
     titleLabel.TextColor3 = WHITE
     titleLabel.Font = Enum.Font.GothamBlack
     titleLabel.TextSize = 26
@@ -4045,7 +4045,7 @@ function buildGui()
     miniBtn.BackgroundColor3 = BG2
     miniBtn.BackgroundTransparency = 0
     miniBtn.BorderSizePixel = 0
-    miniBtn.Text = "Vis Duels"
+    miniBtn.Text = "FORCE HUB"
     miniBtn.TextColor3 = WHITE
     miniBtn.Font = Enum.Font.GothamBold
     miniBtn.TextSize = 12
@@ -4769,7 +4769,7 @@ function buildGui()
         local row = mkRow(mainPage, 30)
         mkLabel(row, "Sky Theme")
         local currentIndex = 1
-        for i, entry in ipairs(CANDY_SKY_ORDER) do
+        for i, entry in ipairs(FORCEHUB_SKY_ORDER) do
             if entry[2] == currentSkyTheme then currentIndex = i; break end
         end
         local container = Instance.new("Frame", row)
@@ -4799,7 +4799,7 @@ function buildGui()
         skySelectorLabel.Size = UDim2.new(0, 80, 0, 26)
         skySelectorLabel.Position = UDim2.new(0.5, -40, 0.5, -13)
         skySelectorLabel.BackgroundTransparency = 1
-        skySelectorLabel.Text = CANDY_SKY_ORDER[currentIndex][2]
+        skySelectorLabel.Text = FORCEHUB_SKY_ORDER[currentIndex][2]
         skySelectorLabel.TextColor3 = WHITE
         skySelectorLabel.Font = Enum.Font.GothamBlack
         skySelectorLabel.TextSize = 12
@@ -4825,13 +4825,13 @@ function buildGui()
 
         local function updateSkySelector(direction)
             local idx = 1
-            for i, entry in ipairs(CANDY_SKY_ORDER) do
+            for i, entry in ipairs(FORCEHUB_SKY_ORDER) do
                 if entry[2] == currentSkyTheme then idx = i; break end
             end
             local newIdx = idx + direction
-            if newIdx < 1 then newIdx = #CANDY_SKY_ORDER end
-            if newIdx > #CANDY_SKY_ORDER then newIdx = 1 end
-            setSkyTheme(CANDY_SKY_ORDER[newIdx][2])
+            if newIdx < 1 then newIdx = #FORCEHUB_SKY_ORDER end
+            if newIdx > #FORCEHUB_SKY_ORDER then newIdx = 1 end
+            setSkyTheme(FORCEHUB_SKY_ORDER[newIdx][2])
             saveAllSettings()
         end
         leftBtn.MouseButton1Click:Connect(function() updateSkySelector(-1) end)
@@ -5461,7 +5461,7 @@ end
 
 function createMobilePanel()
     local panel = Instance.new("ScreenGui")
-    panel.Name = "LustHubMobilePanel"
+    panel.Name = "FORCEHUBMobilePanel"
     panel.ResetOnSpawn = false
     panel.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     pcall(function() if syn and syn.protect_gui then syn.protect_gui(panel) end end)
